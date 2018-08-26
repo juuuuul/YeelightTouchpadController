@@ -1,0 +1,11 @@
+{
+    "brokerIP": "IP of the ESP8266",
+    "port": 1883,
+    "bulbs": [
+        {
+            "ip": "IP of the light bulb",
+            "brightnessFactor": 1,
+            "temperatureFactor": 35
+        }
+    ]
+}

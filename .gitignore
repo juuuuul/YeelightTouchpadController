@@ -1,0 +1,9 @@
+.pioenvs
+.piolibdeps
+.vscode
+__MACOSX/
+*/venv
+*.pyc
+
+Raspberry/config.json
+ESP8266/src/config.h
