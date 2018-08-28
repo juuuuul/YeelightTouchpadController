@@ -9,8 +9,9 @@ print("Started subscriber.")
 def on_connect(mosq, obj, falgs, rc):
     mqttc.subscribe("touchpad/x", 0)
     mqttc.subscribe("touchpad/y", 0)
-    mqttc.subscribe("touchpad/stat", 0)
+    # mqttc.subscribe("touchpad/stat", 0)
     mqttc.subscribe("touchpad/tap", 0)
+    mqttc.subscribe("touchpad/double_tap", 0)
 
 
 def on_subscribe(mosq, obj, mid, granted_qos):

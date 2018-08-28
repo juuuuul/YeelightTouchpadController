@@ -4,6 +4,8 @@
 __MACOSX/
 */venv
 *.pyc
+*.travis.yml
+*lib/
 
 Raspberry/config.json
 ESP8266/src/config.h

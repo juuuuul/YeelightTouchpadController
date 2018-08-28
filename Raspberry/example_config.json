@@ -5,7 +5,8 @@
         {
             "ip": "IP of the light bulb",
             "brightnessFactor": 1,
-            "temperatureFactor": 35
+            "temperatureFactor": 35,
+            "hueFactor": 1
         }
     ]
 }

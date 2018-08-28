@@ -6,6 +6,7 @@ struct mouse_data {
   int y;
   int stat;
   int tap;
+  int double_tap;
 };
 
 void mouse_init();
