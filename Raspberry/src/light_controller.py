@@ -33,8 +33,15 @@ class LightController:
 
 
     def initializeBulb(self):   
-        self.bulb = Bulb(self.ip)
-        self.bulb.start_music()
+        try:
+            self.bulb = Bulb(self.ip)
+        except:
+            print("Bulb initializatio failed")
+
+        try:
+            self.bulb.start_music()
+        except:
+            print("Music mode failed")
 
 
     def changeBrightness(self, value):
