@@ -3,6 +3,7 @@
 from yeelight import Bulb
 from src.utils import clamp
 from src.config import CONFIG
+import threading
 
 
 MODE = ["TEMP", "HUE"]
@@ -30,23 +31,30 @@ class LightController:
         self.brightnessFactor = CONFIG["brightnessFactor"]
         self.temperatureFactor = CONFIG["temperatureFactor"]
         self.hueFactor = CONFIG["hueFactor"]
+        self.reconnectInterval = CONFIG["reconnectInterval"]
 
 
     def initializeBulb(self):   
         try:
-            self.bulb = Bulb(self.ip)
+            self.bulb = Bulb(self.ip, effect="smooth", duration=1000)
+            print("Initialized bulb successfully")
         except:
             print("Bulb initializatio failed")
 
         try:
             self.bulb.start_music()
+            print("Started music mode successfully")
         except:
             print("Music mode failed")
 
+        threading.Timer(self.reconnectInterval, self.initializeBulb).start()
+
 
     def changeBrightness(self, value):
-        self.brightness = clamp(self.brightness + value * self.brightnessFactor, self.MIN_BRIGHTNESS, self.MAX_BRIGHTNESS)
-        self.setBrightness()
+        new_value = round(clamp(self.brightness + value * self.brightnessFactor, self.MIN_BRIGHTNESS, self.MAX_BRIGHTNESS))
+        if not new_value ==  self.brightness:
+            self.brightness = new_value
+            self.setBrightness()
 
 
     def setBrightness(self):
@@ -59,12 +67,17 @@ class LightController:
     def changeColor(self, value):
         if self.mode == 0:
             value = clamp(value, -50, 50)
-            self.temperature = clamp(self.temperature + value * self.temperatureFactor, self.MIN_TEMPERATURE, self.MAX_TEMPERATURE)
-            self.setTemperature()
+            new_value = round(clamp(self.temperature + value * self.temperatureFactor, self.MIN_TEMPERATURE, self.MAX_TEMPERATURE))
+            if not new_value == self.temperature:
+                self.temperature = new_value
+                self.setTemperature()
+                
 
         if self.mode == 1:
-            self.hue = (self.hue + value * self.hueFactor) % self.MAX_HUE
-            self.setHue()
+            new_value = round((self.hue + value * self.hueFactor) % self.MAX_HUE)
+            if not new_value == self.hue:
+                self.hue = new_value
+                self.setHue()
 
 
     def setTemperature(self):
