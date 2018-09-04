@@ -39,4 +39,6 @@ void loop() {
     publish("touchpad/stat", (char*)&data.stat);
     publish("touchpad/tap", (char*)&data.tap);
     publish("touchpad/double_tap", (char*)&data.double_tap);
+
+    delay(25);
 }
