@@ -14,4 +14,6 @@ def loadConfig(path):
     CONFIG["bulbIP"] = data["bulbs"][0]["ip"]
     CONFIG["brightnessFactor"] = data["bulbs"][0]["brightnessFactor"]
     CONFIG["temperatureFactor"] = data["bulbs"][0]["temperatureFactor"]  
-    CONFIG["hueFactor"] = data["bulbs"][0]["hueFactor"]  
+    CONFIG["hueFactor"] = data["bulbs"][0]["hueFactor"]    
+    CONFIG["reconnectInterval"] = data["bulbs"][0]["reconnectInterval"]
+    CONFIG["axisThreshold"] = data["bulbs"][0]["axisThreshold"]  

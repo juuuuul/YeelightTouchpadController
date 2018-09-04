@@ -1,9 +1,8 @@
 import src.light_controller
+from src.config import CONFIG
 
 
-# To avoid broken connection issues, we reconnect to the bulb when every 100th message is received
-restart_time = 1000
-timer = 0
+lastMessage = {'x' : 0, 'y': 0}
 
 
 class MessageHandler:
@@ -13,25 +12,31 @@ class MessageHandler:
 
 
     def receiveData(self, mosq, obj, msg):
-        global timer, restart_time
-
-        timer += 1
-        if timer == restart_time:     
-            self.lightController.initializeBulb()
-            timer = 0
 
         # We potentially get to much data and only need the first 4 bytes    
         value = int.from_bytes(msg.payload[:4], byteorder='little', signed=True)
         
         if value == 0:
             return
+
+
+        # To avoid small accidental changes on the wrong axis, the value for an axis is only used
+        # if the ratio between this axis and the other one is above a threshold given in the config 
         
-        if (msg.topic == "touchpad/x"):
+        if (msg.topic == "touchpad/x" and self.isRatioHighEnough(value, lastMessage['y'])):
             self.lightController.changeColor(value)
-        if (msg.topic == "touchpad/y"):
+            lastMessage['x'] = value
+
+        if (msg.topic == "touchpad/y" and self.isRatioHighEnough(value, lastMessage['x'])):
             self.lightController.changeBrightness(value) 
+            lastMessage['y'] = value
+
         if (msg.topic == "touchpad/tap"):
             self.lightController.toggleLight(value)
+
         if (msg.topic == "touchpad/double_tap"):
             self.lightController.toggleMode(value)
 
+    
+    def isRatioHighEnough(self, a, b):
+        return b == 0 or abs(a / b) > CONFIG["axisThreshold"]

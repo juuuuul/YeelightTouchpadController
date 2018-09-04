@@ -6,7 +6,9 @@
             "ip": "IP of the light bulb",
             "brightnessFactor": 1,
             "temperatureFactor": 35,
-            "hueFactor": 1
+            "hueFactor": 1,
+            "reconnectInterval": 5,
+            "axisThreshold": 0.6
         }
     ]
 }
